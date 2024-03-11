@@ -11,10 +11,14 @@ namespace TheatricalPlayersRefactoringKata
             return string.Format("Statement for {0}\n", invoice.Customer);
         }
 
-        public string GetInvoiceFooter(CultureInfo cultureInfo, int totalAmount, int volumeCredits)
+        public string GetInvoiceTotalOwed(CultureInfo cultureInfo, int totalAmount)
         {
-            return String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100))
-                + String.Format("You earned {0} credits\n", volumeCredits);
+            return String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
+        }
+
+        public string GetInvoiceEarndCredits(int volumeCredits)
+        {
+            return String.Format("You earned {0} credits\n", volumeCredits);
         }
 
         public string PrintInvoiceItem(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf)
@@ -74,7 +78,8 @@ namespace TheatricalPlayersRefactoringKata
                 result += PrintInvoiceItem(cultureInfo, play, thisAmount, perf);
                 totalAmount += thisAmount;
             }
-            result += GetInvoiceFooter(cultureInfo, totalAmount, volumeCredits);
+            result += GetInvoiceTotalOwed(cultureInfo, totalAmount);
+            result += GetInvoiceEarndCredits(volumeCredits);
             return result;
         }
     }
