@@ -71,7 +71,7 @@ namespace TheatricalPlayersRefactoringKata
             var result = FormatTitle(invoice);
             CultureInfo cultureInfo = new CultureInfo("en-US");
 
-            foreach(var perf in invoice.Performances)
+            foreach (var perf in invoice.Performances)
             {
                 var play = plays[perf.PlayID];
                 int thisAmount = CalculateAmount(play, perf);
