@@ -19,7 +19,7 @@ namespace TheatricalPlayersRefactoringKata
 
         public string PrintInvoiceItem(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf)
         {
-             return String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
+            return String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
         }
 
         public int CalculateAmount(Play play, Performance perf)
@@ -48,6 +48,14 @@ namespace TheatricalPlayersRefactoringKata
             return thisAmount;
         }
 
+        public int CalculateVolumeCredits(Performance perf, Play play)
+        {
+            int volumeCredits = Math.Max(perf.Audience - 30, 0);
+            // add extra credit for every ten comedy attendees
+            if ("comedy" == play.Type) volumeCredits += (int)Math.Floor((decimal)perf.Audience / 5);
+            return volumeCredits;
+        }
+
         public string Print(Invoice invoice, Dictionary<string, Play> plays)
         {
             var totalAmount = 0;
@@ -60,9 +68,7 @@ namespace TheatricalPlayersRefactoringKata
                 var play = plays[perf.PlayID];
                 int thisAmount = CalculateAmount(play, perf);
                 // add volume credits
-                volumeCredits += Math.Max(perf.Audience - 30, 0);
-                // add extra credit for every ten comedy attendees
-                if ("comedy" == play.Type) volumeCredits += (int)Math.Floor((decimal)perf.Audience / 5);
+                volumeCredits += CalculateVolumeCredits(perf, play);
 
                 // print line for this order
                 result += PrintInvoiceItem(cultureInfo, play, thisAmount, perf);
