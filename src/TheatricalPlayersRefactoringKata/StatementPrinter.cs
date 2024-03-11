@@ -6,22 +6,22 @@ namespace TheatricalPlayersRefactoringKata
 {
     public class StatementPrinter
     {
-        public string GetTitle(Invoice invoice)
+        public string FormatTitle(Invoice invoice)
         {
             return string.Format("Statement for {0}\n", invoice.Customer);
         }
 
-        public string GetInvoiceTotalOwed(CultureInfo cultureInfo, int totalAmount)
+        public string FormatTotalAmount(CultureInfo cultureInfo, int totalAmount)
         {
             return String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
         }
 
-        public string GetInvoiceEarndCredits(int volumeCredits)
+        public string FormatEarnedCredits(int volumeCredits)
         {
             return String.Format("You earned {0} credits\n", volumeCredits);
         }
 
-        public string PrintInvoiceItem(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf)
+        public string FormatStatementItem(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf)
         {
             return String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
         }
@@ -68,7 +68,7 @@ namespace TheatricalPlayersRefactoringKata
         {
             var totalAmount = 0;
             var volumeCredits = 0;
-            var result = GetTitle(invoice);
+            var result = FormatTitle(invoice);
             CultureInfo cultureInfo = new CultureInfo("en-US");
 
             foreach(var perf in invoice.Performances)
@@ -79,11 +79,11 @@ namespace TheatricalPlayersRefactoringKata
                 volumeCredits += CalculateVolumeCredits(perf, play);
 
                 // print line for this order
-                result += PrintInvoiceItem(cultureInfo, play, thisAmount, perf);
+                result += FormatStatementItem(cultureInfo, play, thisAmount, perf);
                 totalAmount += thisAmount;
             }
-            result += GetInvoiceTotalOwed(cultureInfo, totalAmount);
-            result += GetInvoiceEarndCredits(volumeCredits);
+            result += FormatTotalAmount(cultureInfo, totalAmount);
+            result += FormatEarnedCredits(volumeCredits);
             return result;
         }
     }
