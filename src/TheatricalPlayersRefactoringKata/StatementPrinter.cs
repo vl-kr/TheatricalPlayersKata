@@ -17,6 +17,11 @@ namespace TheatricalPlayersRefactoringKata
                 + String.Format("You earned {0} credits\n", volumeCredits);
         }
 
+        public string PrintInvoiceItem(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf)
+        {
+             return String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
+        }
+
         public string Print(Invoice invoice, Dictionary<string, Play> plays)
         {
             var totalAmount = 0;
@@ -52,7 +57,7 @@ namespace TheatricalPlayersRefactoringKata
                 if ("comedy" == play.Type) volumeCredits += (int)Math.Floor((decimal)perf.Audience / 5);
 
                 // print line for this order
-                result += String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
+                result += PrintInvoiceItem(cultureInfo, play, thisAmount, perf);
                 totalAmount += thisAmount;
             }
             result += GetInvoiceFooter(cultureInfo, totalAmount, volumeCredits);
