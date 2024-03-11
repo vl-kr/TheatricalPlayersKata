@@ -1,3 +1,5 @@
+using System;
+
 namespace TheatricalPlayersRefactoringKata
 {
     public class Play
@@ -11,6 +13,16 @@ namespace TheatricalPlayersRefactoringKata
         public Play(string name, string type) {
             this._name = name;
             this._type = type;
+        }
+
+        public IPlayCalculator GetPlayCalculator()
+        {
+            return this.Type switch
+            {
+                "tragedy" => new TragedyPlayCalculator(),
+                "comedy" => new ComedyPlayCalculator(),
+                _ => throw new Exception("unknown type: " + this.Type),
+            };
         }
     }
 }
